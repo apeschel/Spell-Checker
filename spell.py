@@ -5,6 +5,8 @@ import optparse
 from trie import Trie
 from watchdog import Watchdog
 
+DICTIONARY_FILE="/usr/share/dict/american-english-small"
+
 def find_match(word):
     try:
         with Watchdog(5):
@@ -89,7 +91,7 @@ def mangle(word):
 
 
 def spell_correct(quiet):
-    with open("/usr/share/dict/american-english-small") as f:
+    with open(DICTIONARY_FILE) as f:
         global dictionary
         dictionary = Trie()
         for word in f:
@@ -108,7 +110,7 @@ def spell_correct(quiet):
 
 
 def spell_mangle():
-    with open("/usr/share/dict/words") as f:
+    with open(DICTIONARY_FILE) as f:
         dictionary = {word.strip() for word in f}
 
     while True:
