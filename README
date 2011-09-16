@@ -1,0 +1,28 @@
+Usage: spell.py [options]
+
+Options:
+  -h, --help    show this help message and exit
+  -m, --mangle  generate misspelt words
+  -q, --quiet   do not print '>' character at start of each line
+
+
+NOTES
+
+* My apologies for any problems, I built this in a rush.
+    * I am heading out of town this weekend and did not have a lot of free time.
+    * Built and tested with Python 2.7
+    * Almost certainly won't work with Python 2.5, as it makes extensive use of sets. Sorry.
+    * Please let me know if there are any major issues.
+* Spell checker has a theoretical worst case run time of O(11 ** L), where L is the length of an input word.
+    * This is arguably vastly worse than the required O(N).
+    * I'm not sure it's actually possible to meet the requirements and beat O(11 ** L).
+    * I massively cheated and used a trie to achieve an average runtime much lower than O(11 ** L).
+    * This largely depends on the input dictionary containing typical English words.
+    * A cleverly constructed dictionary would force O(11 ** L).
+* Program may have a long start up time, depending on your dictionary size.
+    * Tried saving the dictionary as a pickle to speed things up, but it actually slowed the startup.
+    * Due to use of a trie, word lookups should take roughly O(L) time, where L is the length of the word.
+
+* Still need to add copyright/documentation/etc
+
+Aaron Peschel (aaron.peschel@gmail.com)
