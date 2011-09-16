@@ -14,7 +14,7 @@ def find_match(word):
             matches = [pos_word for pos_word in var_iterative(word)
                          if pos_word in dictionary]
     except Watchdog:
-        return "WORD IS TOO COMPLEX"
+        return "WORD IS TOO COMPLEX: %s" % (word)
 
     if not len(matches):
         return "NO SUGGESTION: %s" % (word)
