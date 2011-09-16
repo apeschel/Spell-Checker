@@ -19,24 +19,6 @@ class Trie:
         self.root = Node('', '')
 
 
-    def add(self, word):
-        def helper(word, cur_node):
-            children = cur_node.children
-            first_ch = word[0] if word else ''
-
-            if not len(word):
-                cur_node.is_word = True
-                return
-            elif first_ch not in children:
-                new_word = cur_node.word + first_ch
-                children[first_ch] = Node(first_ch, new_word)
-
-            helper(word[1:], children[first_ch])
-
-        word = word.rstrip()
-        helper(word, self.root)
-
-
     def __getitem__(self, word):
         def helper(word, cur_node):
             children = cur_node.children
@@ -66,3 +48,19 @@ class Trie:
 
     def __str__(self):
         pass
+
+
+    def add(self, word):
+        word = word.rstrip()
+        cur_node = self.root
+
+        for char in word:
+            children = cur_node.children
+
+            if char not in children:
+                new_word = cur_node.word + char
+                children[char] = Node(char, new_word)
+
+            cur_node = children[char]
+
+        cur_node.is_word = True
