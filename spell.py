@@ -6,6 +6,7 @@ from trie import Trie
 from watchdog import Watchdog
 
 DICTIONARY_FILE="/usr/share/dict/american-english-small"
+VOWELS="aeiouAEIOU"
 
 def find_match(word):
     try:
@@ -40,8 +41,8 @@ def var_recursive(word):
         if char == next_char:
             words |= var_recursive(word[1:])
 
-        if char.lower() in "aeiou":
-            for v in "aeiou":
+        if char.lower() in VOWELS:
+            for v in VOWELS:
                 words |= gen_set(v)
         else:
             words |= gen_set(char)
@@ -58,8 +59,8 @@ def var_iterative(word):
         if char == prev_char:
             chars |= set([''])
 
-        if char.lower() in "aeiou":
-            chars |= set("aeiouAEIOU")
+        if char.lower() in VOWELS:
+            chars |= set(VOWELS)
 
         word_vars = {prefix + c for prefix in word_vars for c in chars
                         if dictionary.has_prefix(prefix + c)}
@@ -82,8 +83,8 @@ def mangle(word):
 
         if random.random() < dup_prob:
             char = char * random.randint(2, max_dups)
-        elif char in "aieou" and random.random() < vowel_prob:
-            char = random.choice(list("aieou"))
+        elif char in VOWELS and random.random() < vowel_prob:
+            char = random.choice(list(VOWELS))
 
         mangled_word.append(char)
 
