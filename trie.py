@@ -29,12 +29,10 @@ class Trie:
             else:
                 return helper(word[1:], children[first_ch])
 
-        word = word.rstrip()
         return helper(word, self.root)
 
 
     def __contains__(self, word):
-        word = word.rstrip()
         cur_node = self.root
 
         for char in word:
@@ -51,7 +49,6 @@ class Trie:
 
 
     def add(self, word):
-        word = word.rstrip()
         cur_node = self.root
 
         for char in word:
@@ -67,7 +64,6 @@ class Trie:
 
 
     def has_prefix(self, prefix):
-        prefix = prefix.rstrip()
         cur_node = self.root
 
         for char in prefix:
