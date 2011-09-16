@@ -93,7 +93,7 @@ def spell_correct(quiet):
         global dictionary
         dictionary = Trie()
         for word in f:
-            dictionary.add(word)
+            dictionary.add(word.strip())
 
     prompt = '' if quiet else '>'
 
