@@ -64,3 +64,18 @@ class Trie:
             cur_node = children[char]
 
         cur_node.is_word = True
+
+
+    def has_prefix(self, prefix):
+        prefix = prefix.rstrip()
+        cur_node = self.root
+
+        for char in prefix:
+            children = cur_node.children
+
+            if char not in children:
+                return False
+            else:
+                cur_node = children[char]
+
+        return True
