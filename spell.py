@@ -2,23 +2,26 @@
 import random
 import sys
 import optparse
+from trie import Trie
 from watchdog import Watchdog
-
-with open("/usr/share/dict/words") as f:
-    dictionary = {word.strip() for word in f}
-
 
 def find_match(word):
     try:
         with Watchdog(5):
-            matches = var_iterative(word) & dictionary
+            matches = [pos_word for pos_word in var_iterative(word)
+                         if pos_word in find_match.dictionary]
     except Watchdog:
         return "WORD IS TOO COMPLEX"
 
     if not len(matches):
         return "NO SUGGESTION: %s" % (word)
     else:
-        return list(matches)[0]
+        return matches[0]
+
+with open("/usr/share/dict/american-english-small") as f:
+    find_match.dictionary = Trie()
+    for word in f:
+        find_match.dictionary.add(word)
 
 
 def var_recursive(word):
@@ -90,6 +93,7 @@ def mangle(word):
 
 
 def spell_correct(quiet):
+
     prompt = '' if quiet else '>'
 
     while True:
@@ -103,6 +107,9 @@ def spell_correct(quiet):
 
 
 def spell_mangle():
+    with open("/usr/share/dict/words") as f:
+        dictionary = {word.strip() for word in f}
+
     while True:
         try:
             word = random.sample(dictionary, 1)[0]
