@@ -22,6 +22,7 @@ def find_match(word):
         return matches[0]
 
 
+# This function is not actually used.
 def var_recursive(word):
     def gen_set(char):
         words = set()
