@@ -11,9 +11,9 @@ with open("/usr/share/dict/words") as f:
 def find_match(word):
     try:
         with Watchdog(5):
-            matches = variations(word) & dictionary
+            matches = var_iterative(word) & dictionary
     except Watchdog:
-        return "WORD IS TOO COMPLEX" % (word)
+        return "WORD IS TOO COMPLEX"
 
     if not len(matches):
         return "NO SUGGESTION: %s" % (word)
@@ -21,10 +21,10 @@ def find_match(word):
         return list(matches)[0]
 
 
-def variations(word):
+def var_recursive(word):
     def gen_set(char):
         words = set()
-        for postfix in variations(word[1:]):
+        for postfix in var_recursive(word[1:]):
             for c in (char.lower(), char.upper()):
                 words.add(c + postfix)
         return words
@@ -38,7 +38,7 @@ def variations(word):
         next_char = word[1] if len(word) >= 2 else None
 
         if char == next_char:
-            words |= variations(word[1:])
+            words |= var_recursive(word[1:])
 
         if char.lower() in "aeiou":
             for v in "aeiou":
@@ -47,6 +47,25 @@ def variations(word):
             words |= gen_set(char)
 
         return words
+
+
+def var_iterative(word):
+    word_vars = {''}
+
+    prev_char = ''
+    for char in word:
+        chars = {char, char.swapcase()}
+        if char == prev_char:
+            chars |= set([''])
+
+        if char.lower() in "aeiou":
+            chars |= set("aeiouAEIOU")
+
+        word_vars = {prefix + c for prefix in word_vars for c in chars}
+
+        prev_char = char
+
+    return word_vars
 
 
 def mangle(word):
