@@ -9,7 +9,7 @@ def find_match(word):
     try:
         with Watchdog(5):
             matches = [pos_word for pos_word in var_iterative(word)
-                         if pos_word in find_match.dictionary]
+                         if pos_word in dictionary]
     except Watchdog:
         return "WORD IS TOO COMPLEX"
 
@@ -17,11 +17,6 @@ def find_match(word):
         return "NO SUGGESTION: %s" % (word)
     else:
         return matches[0]
-
-with open("/usr/share/dict/american-english-small") as f:
-    find_match.dictionary = Trie()
-    for word in f:
-        find_match.dictionary.add(word)
 
 
 def var_recursive(word):
@@ -64,7 +59,8 @@ def var_iterative(word):
         if char.lower() in "aeiou":
             chars |= set("aeiouAEIOU")
 
-        word_vars = {prefix + c for prefix in word_vars for c in chars}
+        word_vars = {prefix + c for prefix in word_vars for c in chars
+                        if dictionary.has_prefix(prefix + c)}
 
         prev_char = char
 
@@ -93,6 +89,11 @@ def mangle(word):
 
 
 def spell_correct(quiet):
+    with open("/usr/share/dict/american-english-small") as f:
+        global dictionary
+        dictionary = Trie()
+        for word in f:
+            dictionary.add(word)
 
     prompt = '' if quiet else '>'
 
