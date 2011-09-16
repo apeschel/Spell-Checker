@@ -91,14 +91,17 @@ def mangle(word):
     return ''.join(mangled_word)
 
 
-def spell_correct(quiet):
+def create_dictionary():
     with open(DICTIONARY_FILE) as f:
         global dictionary
         dictionary = Trie()
         for word in f:
             dictionary.add(word.strip())
 
+
+def spell_correct(quiet):
     prompt = '' if quiet else '>'
+    create_dictionary()
 
     while True:
         try:
