@@ -52,19 +52,16 @@ class Trie:
 
 
     def __contains__(self, word):
-        def helper(word, cur_node):
-            children = cur_node.children
-            first_ch = word[0] if word else ''
-
-            if not len(word):
-                return cur_node.is_word
-            elif first_ch not in children:
-                return False
-            else:
-                return helper(word[1:], children[first_ch])
-
         word = word.rstrip()
-        return helper(word, self.root)
+        cur_node = self.root
+
+        for char in word:
+            children = cur_node.children
+            if char not in children:
+                return False
+            cur_node = children[char]
+
+        return cur_node.is_word
 
 
     def __str__(self):
